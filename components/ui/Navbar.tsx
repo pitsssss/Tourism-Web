@@ -3,7 +3,6 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import { Dialog } from '@headlessui/react';
-import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
 import Button from './Button';
 
 const navigation = [
@@ -54,7 +53,6 @@ const Navbar = () => {
             onClick={() => setMobileMenuOpen(true)}
           >
             <span className="sr-only">Open main menu</span>
-            <Bars3Icon className="h-6 w-6" aria-hidden="true" />
           </button>
         </div>
       </nav>
@@ -81,7 +79,6 @@ const Navbar = () => {
               onClick={() => setMobileMenuOpen(false)}
             >
               <span className="sr-only">Close menu</span>
-              <XMarkIcon className="h-6 w-6" aria-hidden="true" />
             </button>
           </div>
           <div className="mt-6 flow-root">
@@ -114,5 +111,6 @@ const Navbar = () => {
     </header>
   );
 };
+
 
 export default Navbar;
