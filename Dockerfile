@@ -8,7 +8,7 @@ WORKDIR /app
 COPY package*.json ./
 
 # Install dependencies (with frozen lockfile for reproducibility)
-RUN npm ci --omit=dev
+RUN npm ci 
 
 # Copy source code
 COPY . .
