@@ -14,29 +14,30 @@ RUN npm ci
 COPY . .
 
 # Build the app
-RUN npm run build
+# RUN npm run build
 
 # Stage 2: Production image
-FROM node:20-alpine AS runner
+# FROM node:20-alpine AS runner
 
 # Set working directory
-WORKDIR /app
+# WORKDIR /app
 
 # Create a non-root user for security
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nextjs --ingroup nodejs
 
+
 # Copy built app from builder stage
-COPY --from=builder /app/public ./public
-COPY --from=builder /app/.next/standalone ./
-COPY --from=builder /app/.next/static ./.next/static
+# COPY --from=builder /app/public ./public
+# COPY --from=builder /app/.next/ ./
+# COPY --from=builder /app/.next/static ./.next/static
 
 # Set ownership to non-root user
-RUN chown -R nextjs:nodejs /app
-USER nextjs
+# RUN chown -R nextjs:nodejs /app
+# USER nextjs
 
 # Expose port (Next.js default)
 EXPOSE 3000
 
 # Start the server (Next.js standalone output)
-CMD ["node", "server.js"]
+CMD ["npm", "run", "dev"]
