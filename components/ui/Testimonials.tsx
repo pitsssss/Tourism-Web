@@ -10,7 +10,7 @@ const testimonials = [
     name: 'Sarah Johnson',
     location: 'New York, USA',
     content: 'SyriaExplorer completely changed my perspective on Syria. The guides were incredibly knowledgeable and the experiences were authentic and moving. Palmyra at sunset was a moment I\'ll never forget.',
-    avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=200&q=80',
+    avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80',
     rating: 5,
   },
   {
@@ -18,7 +18,7 @@ const testimonials = [
     name: 'Ahmed Hassan',
     location: 'Dubai, UAE',
     content: 'As someone with Syrian roots, I wanted to reconnect with my heritage. SyriaExplorer helped me discover parts of my culture I never knew existed. The food tour in Damascus was exceptional!',
-    avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=200&q=80',
+    avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80',
     rating: 5,
   },
   {
@@ -26,36 +26,34 @@ const testimonials = [
     name: 'Marie Dubois',
     location: 'Paris, France',
     content: 'The attention to detail and safety measures were impressive. Our guide made ancient history come alive. I particularly loved the mosaic workshop in Maaloula - such a unique experience!',
-    avatar: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=200&q=80',
+    avatar: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80',
     rating: 5,
   },
 ];
 
 const Testimonials = () => {
   return (
-    <section className="section-padding bg-secondary-50">
-      <div className="container">
-        <div className="text-center mb-16">
-          <motion.h2 
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="section-title"
-          >
-            What Travelers Say
-          </motion.h2>
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-            className="section-subtitle max-w-3xl mx-auto"
-          >
-            Don't just take our word for it. Here's what our travelers have to say about their experiences with SyriaExplorer.
-          </motion.p>
-        </div>
-        
+    <section className="py-20 bg-black text-white">
+      <div className="container mx-auto text-center">
+        <motion.h2 
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+          className="text-4xl font-bold mb-6 text-white"
+        >
+          What Travelers Say
+        </motion.h2>
+        <motion.p
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6, delay: 0.2 }}
+          className="max-w-2xl mx-auto text-lg mb-16 text-gray-200"
+        >
+          Don't just take our word for it. Here's what our travelers have to say about their experiences with SyriaExplorer.
+        </motion.p>
+
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {testimonials.map((testimonial, index) => (
             <motion.div
@@ -65,8 +63,8 @@ const Testimonials = () => {
               viewport={{ once: true }}
               transition={{ duration: 0.6, delay: index * 0.2 }}
             >
-              <Card hoverable className="h-full">
-                <div className="p-6">
+              <Card hoverable className="h-full bg-white">
+                <div className="p-6 flex flex-col items-center">
                   <div className="flex mb-4">
                     {[...Array(testimonial.rating)].map((_, i) => (
                       <svg key={i} className="h-5 w-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
@@ -74,32 +72,30 @@ const Testimonials = () => {
                       </svg>
                     ))}
                   </div>
-                  <p className="text-secondary-600 mb-6 italic">"{testimonial.content}"</p>
-                  <div className="flex items-center">
+                  <p className="mb-6 italic text-center text-black">"{testimonial.content}"</p>
+                  <div className="flex flex-col items-center">
                     <img
                       src={testimonial.avatar}
                       alt={testimonial.name}
-                      className="h-12 w-12 rounded-full object-cover mr-4"
+                      className="h-16 w-16 rounded-full object-cover mb-2"
                     />
-                    <div>
-                      <h4 className="font-semibold text-secondary-900">{testimonial.name}</h4>
-                      <p className="text-sm text-secondary-500">{testimonial.location}</p>
-                    </div>
+                    <h4 className="font-semibold text-black">{testimonial.name}</h4>
+                    <p className="text-gray-600 text-sm">{testimonial.location}</p>
                   </div>
                 </div>
               </Card>
             </motion.div>
           ))}
         </div>
-        
-        <div className="text-center mt-12">
+
+        <div className="mt-12">
           <motion.a
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.6 }}
             href="#"
-            className="inline-flex items-center text-primary-600 font-medium hover:text-primary-700 transition-colors"
+            className="inline-flex items-center text-white font-medium hover:text-gray-300 transition-colors"
           >
             Read more reviews
             <svg className="ml-2 h-5 w-5" viewBox="0 0 20 20" fill="currentColor">

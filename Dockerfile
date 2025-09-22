@@ -1,43 +1,55 @@
-# Stage 1: Build the application
-FROM node:20-alpine AS builder
+# syntax=docker.io/docker/dockerfile:1
 
-# Set working directory
+FROM node:22-alpine AS base
+
+# Install dependencies only when needed
+FROM base AS deps
+RUN apk add --no-cache libc6-compat
 WORKDIR /app
 
-# Copy package files
-COPY package*.json ./
+# Install dependencies
+COPY package.json yarn.lock* package-lock.json* pnpm-lock.yaml* .npmrc* ./
+RUN \
+  if [ -f yarn.lock ]; then yarn --frozen-lockfile; \
+  elif [ -f package-lock.json ]; then npm ci; \
+  elif [ -f pnpm-lock.yaml ]; then corepack enable pnpm && pnpm i --frozen-lockfile; \
+  else echo "Lockfile not found." && exit 1; \
+  fi
 
-# Install dependencies (with frozen lockfile for reproducibility)
-RUN npm ci 
-
-# Copy source code
+# Rebuild the source code
+FROM base AS builder
+WORKDIR /app
+COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
-# Build the app
-# RUN npm run build
+ENV NEXT_TELEMETRY_DISABLED=1
 
-# Stage 2: Production image
-# FROM node:20-alpine AS runner
+RUN \
+  if [ -f yarn.lock ]; then yarn run build; \
+  elif [ -f package-lock.json ]; then npm run build; \
+  elif [ -f pnpm-lock.yaml ]; then corepack enable pnpm && pnpm run build; \
+  else echo "Lockfile not found." && exit 1; \
+  fi
 
-# Set working directory
-# WORKDIR /app
+# Production image
+FROM base AS runner
+WORKDIR /app
 
-# Create a non-root user for security
+ENV NODE_ENV=production
+ENV NEXT_TELEMETRY_DISABLED=1
+
 RUN addgroup --system --gid 1001 nodejs
-RUN adduser --system --uid 1001 nextjs --ingroup nodejs
+RUN adduser --system --uid 1001 nextjs
 
+# Copy standalone files
+COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
+COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
+COPY --from=builder --chown=nextjs:nodejs /app/public ./public
 
-# Copy built app from builder stage
-# COPY --from=builder /app/public ./public
-# COPY --from=builder /app/.next/ ./
-# COPY --from=builder /app/.next/static ./.next/static
+USER nextjs
 
-# Set ownership to non-root user
-# RUN chown -R nextjs:nodejs /app
-# USER nextjs
-
-# Expose port (Next.js default)
 EXPOSE 3000
+ENV PORT=3000
+ENV HOSTNAME="0.0.0.0"
 
-# Start the server (Next.js standalone output)
-CMD ["npm", "run", "dev"]
+CMD ["node", "server.js"]
