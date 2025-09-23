@@ -1,0 +1,144 @@
+'use client';
+
+import { useState, useEffect } from 'react';
+import { news } from '@/lib/news';
+import NewsCard from '@/components/NewsCard';
+import AnimatedSection from '@/components/ui/AnimatedSection';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Input } from '@/components/ui/Input';
+import { Calendar } from 'lucide-react';
+
+export default function NewsPage() {
+  const [filteredNews, setFilteredNews] = useState(news);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [selectedYear, setSelectedYear] = useState('all');
+
+  useEffect(() => {
+    let filtered = [...news];
+    
+    if (searchTerm) {
+      filtered = filtered.filter(item => 
+        item.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        item.excerpt.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        item.content.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+    }
+    
+    if (selectedYear !== 'all') {
+      filtered = filtered.filter(item => 
+        new Date(item.publishedAt).getFullYear().toString() === selectedYear
+      );
+    }
+    
+    // Sort by date (newest first)
+    filtered.sort((a, b) => 
+      new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime()
+    );
+    
+    setFilteredNews(filtered);
+  }, [searchTerm, selectedYear]);
+
+  const years = ['all', ...new Set(news.map(n => new Date(n.publishedAt).getFullYear().toString()))].sort().reverse();
+
+  return (
+    <div>
+      {/* Hero Section */}
+      <div className="bg-gradient-to-r from-blue-700 to-blue-900 text-white py-20">
+        <div className="container mx-auto px-4 text-center">
+          <motion.h1 
+            className="text-5xl md:text-6xl font-bold mb-6 font-playfair"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+          >
+            Syria Tourism News
+          </motion.h1>
+          <motion.p 
+            className="text-xl md:text-2xl max-w-3xl mx-auto opacity-90"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.2 }}
+          >
+            Stay updated with the latest developments in Syrian tourism and travel advisories
+          </motion.p>
+        </div>
+      </div>
+
+      {/* Filters */}
+      <AnimatedSection className="py-12 bg-blue-50">
+        <div className="container mx-auto px-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
+            <div className="lg:col-span-2">
+              <div className="relative">
+                <Input
+                  type="text"
+                  placeholder="Search news..."
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  className="w-full p-4 pl-12 pr-4 border border-amber-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-transparent text-gray-900 placeholder-gray-500"
+                />
+                <svg className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                </svg>
+              </div>
+            </div>
+            <div>
+              <select
+                value={selectedYear}
+                onChange={(e) => setSelectedYear(e.target.value)}
+                className="w-full p-4 border border-amber-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-transparent text-gray-900 placeholder-gray-500"
+              >
+                {years.map(year => (
+                  <option key={year} value={year}>
+                    {year === 'all' ? 'All Years' : year}
+                  </option>
+                ))}
+              </select>
+            </div>
+          </div>
+
+          {/* Results Count */}
+          <motion.p 
+            className="text-lg text-gray-600 mb-8"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.5 }}
+          >
+            Showing {filteredNews.length} of {news.length} news items
+          </motion.p>
+
+          {/* News Grid */}
+          <div className="space-y-8">
+            <AnimatePresence>
+              {filteredNews.map((item, index) => (
+                <motion.div
+                  key={item.slug}
+                  initial={{ opacity: 0, y: 30 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: 30 }}
+                  transition={{ duration: 0.5, delay: index * 0.1 }}
+                >
+                  <NewsCard news={item} />
+                </motion.div>
+              ))}
+            </AnimatePresence>
+          </div>
+
+          {filteredNews.length === 0 && (
+            <div className="text-center py-16">
+              <motion.h3 
+                className="text-2xl font-bold text-gray-700 mb-4"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.5 }}
+              >
+                No news found
+              </motion.h3>
+              <p className="text-gray-600">Try adjusting your search criteria</p>
+            </div>
+          )}
+        </div>
+      </AnimatedSection>
+    </div>
+  );
+}
