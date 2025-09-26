@@ -1,32 +1,3 @@
-// import React from 'react';
-// import Head from 'next/head';
-// import Hero from '../components/ui/Hero';
-// import Features from '../components/ui/Features';
-// import Testimonials from '../components/ui/Testimonials';
-// import CTA from '../components/ui/CTA';
-// import Footer from '@/components/ui/Footer';
-// import Link from "next/link";
-
-// export default function Home() {
-//   return (
-//     <>
-//       <Head>
-//         <title>SyriaExplorer - Discover the Soul of Syria</title>
-//         <meta name="description" content="Explore Syria's timeless beauty through curated experiences that showcase its rich history, culture, and natural wonders." />
-//         <meta name="viewport" content="width=device-width, initial-scale=1" />
-//         <link rel="icon" href="/favicon.ico" />
-//       </Head>
-      
-
-
-//       <Hero />
-//       <Features />
-//       <Testimonials />
-//       <CTA />
-//       <Footer/>
-//     </>
-//   );
-// }
 'use client';
 
 import { useState, useEffect } from 'react';
@@ -36,39 +7,24 @@ import Link from 'next/link';
 import DestinationCard from '@/components/DestinationCard';
 import ArticleCard from '@/components/ArticleCard';
 import Newsletter from '@/components/ui/Newsletter';
-import { Destination, Article } from '@/types';
+import { destinations } from '@/lib/destinations';
+import { articles } from '@/lib/articles';
+import type { Destination, Article } from '@/types';
 
 export default function Home() {
-  const [featuredDestinations, setFeaturedDestinations] = useState<Destination[]>([]);
-  const [latestArticles, setLatestArticles] = useState<Article[]>([]);
   const [currentHeroIndex, setCurrentHeroIndex] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
+  const [featuredDestinations, setFeaturedDestinations] = useState<Destination[]>([]);
+  const [latestArticles, setLatestArticles] = useState<Article[]>([]);
 
   useEffect(() => {
-    // Simulate fetching data from an API
     const fetchData = async () => {
       try {
-        // In a real app, you would fetch from your API
-        // const destinationsResponse = await fetch('/api/destinations');
-        // const articlesResponse = await fetch('/api/articles');
-        // const destinations = await destinationsResponse.json();
-        // const articles = await articlesResponse.json();
-        
-        // For now, we'll use the existing data but simulate API delay
         await new Promise(resolve => setTimeout(resolve, 800));
         
-        // Import data dynamically
-        const destinationsModule = await import('@/lib/destinations');
-        const articlesModule = await import('@/lib/articles');
-        
-        const destinations = destinationsModule.destinations;
-        const articles = articlesModule.articles;
-        
-        // Get 3 random featured destinations
         const shuffled = [...destinations].sort(() => 0.5 - Math.random());
         setFeaturedDestinations(shuffled.slice(0, 3));
         
-        // Get 3 latest articles
         const sortedArticles = [...articles].sort((a, b) => 
           new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime()
         );
@@ -83,7 +39,6 @@ export default function Home() {
 
     fetchData();
 
-    // Auto-rotate hero section
     const interval = setInterval(() => {
       setCurrentHeroIndex((prev) => (prev + 1) % heroSlides.length);
     }, 6000);
@@ -93,12 +48,12 @@ export default function Home() {
 
   const heroSlides = [
     {
-      title: "Explore the Cradle of Civilization",
+      title: "Discover the Cradle of Civilization",
       subtitle: "Explore ancient cities, vibrant markets, and breathtaking landscapes",
       image: "/images/hero/syria-panorama.jpg",
       cta: "Explore Destinations",
       ctaLink: "/destinations",
-      gradient: "from-amber-800 to-amber-900"
+      gradient: "from-blue-800 to-blue-900"
     },
     {
       title: "Taste the Flavors of Syria",
@@ -114,7 +69,7 @@ export default function Home() {
       image: "/images/hero/ancient-syria.jpg",
       cta: "Read Historical Articles",
       ctaLink: "/articles?category=History",
-      gradient: "from-blue-800 to-blue-900"
+      gradient: "from-amber-700 to-amber-700"
     }
   ];
 
@@ -137,7 +92,6 @@ export default function Home() {
     <div className="overflow-hidden">
       {/* Enhanced Hero Section */}
       <section className="relative h-screen max-h-[800px]">
-        {/* Background Image with Overlay */}
         <div className="absolute inset-0">
           <Image
             src={heroSlides[currentHeroIndex].image}
@@ -149,7 +103,6 @@ export default function Home() {
           <div className={`absolute inset-0 bg-gradient-to-r ${heroSlides[currentHeroIndex].gradient} opacity-80`}></div>
         </div>
 
-        {/* Content */}
         <div className="relative z-10 flex items-center justify-center h-full">
           <div className="text-center text-white max-w-4xl mx-4 md:mx-8">
             <motion.div
@@ -184,7 +137,6 @@ export default function Home() {
           </div>
         </div>
 
-        {/* Hero Navigation Dots */}
         <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 flex space-x-3">
           {heroSlides.map((_, index) => (
             <button
@@ -386,40 +338,50 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Call to Action */}
-      <section className="py-20 bg-amber-900 text-white relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-r from-amber-900 via-amber-800 to-amber-900"></div>
-        <div className="container mx-auto px-4 relative z-10">
-          <div className="max-w-4xl mx-auto text-center">
-            <motion.h2 
-              className="text-4xl md:text-5xl font-bold mb-6 font-playfair"
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.8 }}
-            >
-              Ready to Explore Syria?
-            </motion.h2>
-            <motion.p 
-              className="text-xl mb-8 opacity-90"
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.8, delay: 0.2 }}
-            >
-              Subscribe to our newsletter for exclusive travel tips, updates on accessible destinations, and special offers.
-            </motion.p>
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.8, delay: 0.4 }}
-            >
-              <Newsletter />
-            </motion.div>
-          </div>
-        </div>
-      </section>
+    {/* Call to Action */}
+<section className="py-20 relative overflow-hidden">
+  {/* Background Image */}
+  <div 
+    className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+    style={{ backgroundImage: "url('/images/syria-background.jpg')" }} // ✅ Replace with your image path
+  />
+  
+  {/* Amber Overlay */}
+  <div className="absolute inset-0 bg-gradient-to-r from-amber-900/90 to-amber-800/80"></div>
+
+  {/* Content */}
+  <div className="container mx-auto px-4 relative z-10">
+    <div className="max-w-4xl mx-auto text-center">
+      <motion.h2 
+        className="text-4xl md:text-5xl font-bold mb-6 font-playfair text-white"
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.8 }}
+      >
+        Ready to Explore Syria?
+      </motion.h2>
+      <motion.p 
+        className="text-xl mb-8 text-white opacity-90"
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.8, delay: 0.2 }}
+      >
+        Subscribe to our newsletter for exclusive travel tips, updates on accessible destinations, and special offers.
+      </motion.p>
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.8, delay: 0.4 }}
+      >
+        <Newsletter />
+      </motion.div>
     </div>
+  </div>
+</section>
+</div>
+
   );
 }

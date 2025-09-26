@@ -86,7 +86,7 @@
 
 import Link from 'next/link';
 import { motion } from 'framer-motion';
-import { Mail, Phone, MapPin, Facebook, Twitter, Instagram, Youtube } from 'lucide-react';
+import { Mail, Phone, MapPin, Facebook, Instagram, Linkedin } from 'lucide-react';
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();
@@ -121,6 +121,13 @@ export default function Footer() {
     }
   ];
 
+  // ✅ Your actual social media links
+  const socialLinks = {
+    instagram: "https://www.instagram.com/peter.toss?igsh=emlidDdnaWh5ZzZ5&utm_source=qr",
+    facebook: "https://www.facebook.com/share/17BrCs1Fag/?mibextid=wwXIfr",
+    linkedin: "https://www.linkedin.com/in/peter-toss?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=ios_app"
+  };
+
   return (
     <footer className="bg-gray-900 text-white pt-16 pb-8">
       <div className="container mx-auto px-4">
@@ -133,26 +140,49 @@ export default function Footer() {
             transition={{ duration: 0.6 }}
             className="lg:col-span-2"
           >
-            <h3 className="text-3xl font-bold mb-4 font-playfair bg-gradient-to-r from-amber-400 to-amber-200 bg-clip-text text-transparent">
-            Explore Syria
+            <h3 className="text-3xl font-bold mb-4 font-serif bg-gradient-to-r from-amber-400 to-amber-200 bg-clip-text text-transparent">
+              Explore Syria
             </h3>
             <p className="text-gray-300 mb-6 leading-relaxed">
               Your trusted guide to exploring the rich history, culture, and beauty of Syria. 
               We're dedicated to showcasing Syria's incredible heritage to the world.
             </p>
             <div className="flex space-x-4">
-              <a href="#" className="w-10 h-10 bg-amber-600 rounded-full flex items-center justify-center hover:bg-amber-700 transition-colors">
+              <motion.a
+                href={socialLinks.facebook}
+                target="_blank"
+                rel="noopener noreferrer"
+                whileHover={{ y: -3 }}
+                whileTap={{ scale: 0.9 }}
+                className="w-10 h-10 bg-amber-600 rounded-full flex items-center justify-center hover:bg-amber-700 transition-colors"
+                aria-label="Visit us on Facebook"
+              >
                 <Facebook className="w-5 h-5" />
-              </a>
-              <a href="#" className="w-10 h-10 bg-amber-600 rounded-full flex items-center justify-center hover:bg-amber-700 transition-colors">
-                <Twitter className="w-5 h-5" />
-              </a>
-              <a href="#" className="w-10 h-10 bg-amber-600 rounded-full flex items-center justify-center hover:bg-amber-700 transition-colors">
+              </motion.a>
+             
+              <motion.a
+                href={socialLinks.instagram}
+                target="_blank"
+                rel="noopener noreferrer"
+                whileHover={{ y: -3 }}
+                whileTap={{ scale: 0.9 }}
+                className="w-10 h-10 bg-amber-600 rounded-full flex items-center justify-center hover:bg-amber-700 transition-colors"
+                aria-label="Follow us on Instagram"
+              >
                 <Instagram className="w-5 h-5" />
-              </a>
-              <a href="#" className="w-10 h-10 bg-amber-600 rounded-full flex items-center justify-center hover:bg-amber-700 transition-colors">
-                <Youtube className="w-5 h-5" />
-              </a>
+              </motion.a>
+              
+              <motion.a
+                href={socialLinks.linkedin}
+                target="_blank"
+                rel="noopener noreferrer"
+                whileHover={{ y: -3 }}
+                whileTap={{ scale: 0.9 }}
+                className="w-10 h-10 bg-amber-600 rounded-full flex items-center justify-center hover:bg-amber-700 transition-colors"
+                aria-label="Connect with us on LinkedIn"
+              >
+                <Linkedin className="w-5 h-5" />
+              </motion.a>
             </div>
           </motion.div>
 
@@ -236,34 +266,37 @@ export default function Footer() {
         </div>
 
         {/* Newsletter Signup */}
-        <div className="bg-gray-800 p-8 rounded-lg mb-8">
+        <div className="bg-gray-800 p-8 rounded-xl mb-8">
           <div className="max-w-2xl mx-auto text-center">
             <motion.h4
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6 }}
-              className="text-2xl font-bold mb-4"
+              className="text-2xl font-bold text-white mb-3"
             >
               Stay Updated
             </motion.h4>
-            <p className="text-gray-300 mb-6 ">
+
+            <p className="text-gray-300 mb-6 max-w-xl mx-auto">
               Subscribe to our newsletter for the latest articles, travel tips, and updates on Syrian tourism.
             </p>
+
             <form className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto">
-              <input
-                type="email"
-                placeholder="Your email address"
-                className="flex-grow p-3 rounded text-gray-800 text-sm"
-              />
-             <div className="flex justify-center w-full">
-  <button
-    type="submit"
-    className="bg-amber-600 hover:bg-amber-700 text-white font-semibold py-3 px-6 rounded transition-colors whitespace-nowrap"
-  >
-    Subscribe
-  </button>
-</div>
+              <div className="relative flex-grow">
+                <input
+                  type="email"
+                  placeholder="your.email@example.com"
+                  className="w-full p-3 rounded-lg bg-gray-700 text-white placeholder-gray-400 text-sm border border-gray-600 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-transparent"
+                  required
+                />
+              </div>
+              <button
+                type="submit"
+                className="bg-amber-600 hover:bg-amber-700 text-white font-semibold py-3 px-6 rounded-lg transition-colors whitespace-nowrap shadow hover:shadow-md min-w-[120px]"
+              >
+                Subscribe
+              </button>
             </form>
           </div>
         </div>
@@ -271,7 +304,7 @@ export default function Footer() {
         {/* Bottom Bar */}
         <div className="flex flex-col md:flex-row justify-between items-center pt-8 border-t border-gray-800">
           <p className="text-gray-400 mb-4 md:mb-0">
-            &copy; {currentYear} Discover Syria. All rights reserved.
+            &copy; {currentYear} Explore Syria. All rights reserved.
           </p>
           <div className="flex space-x-6">
             <Link href="/privacy" className="text-gray-400 hover:text-amber-400 transition-colors">

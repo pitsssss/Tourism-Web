@@ -17,7 +17,7 @@ const playfair = Playfair_Display({
 });
 
 export const metadata: Metadata = {
-  title: "Explore Syria - Ancient Wonders, Rich Culture & Timeless Beauty",
+  title: "Syria Explorer - Ancient Wonders, Rich Culture & Timeless Beauty",
   description: "Explore Syria's breathtaking historical sites, vibrant culture, and hidden gems. Read expert travel guides, latest news, and plan your unforgettable journey.",
   keywords: ["Syria tourism", "Visit Syria", "Syria travel guide", "Ancient Syria", "Damascus", "Palmyra", "Syria articles", "Middle East travel"],
 };

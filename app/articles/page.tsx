@@ -1,12 +1,14 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Article } from '@/types';
 import ArticleCard from '@/components/ArticleCard';
 import { motion, AnimatePresence } from 'framer-motion';
+import { articles } from '@/lib/articles';
+import type { Article } from '@/types'; // Import the Article type
 
 export default function ArticlesPage() {
-  const [articles, setArticles] = useState<Article[]>([]);
+  // Properly type the useState hooks with Article[]
+  const [allArticles, setAllArticles] = useState<Article[]>([]);
   const [filteredArticles, setFilteredArticles] = useState<Article[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('all');
@@ -16,12 +18,9 @@ export default function ArticlesPage() {
   useEffect(() => {
     const fetchArticles = async () => {
       try {
-        // Simulate API call
-        const articlesModule = await import('@/lib/articles');
-        const allArticles = articlesModule.articles;
-        
-        setArticles(allArticles);
-        setFilteredArticles(allArticles);
+        await new Promise(resolve => setTimeout(resolve, 300));
+        setAllArticles(articles);
+        setFilteredArticles(articles);
         setIsLoading(false);
       } catch (error) {
         console.error('Error fetching articles:', error);
@@ -33,7 +32,7 @@ export default function ArticlesPage() {
   }, []);
 
   useEffect(() => {
-    let filtered = [...articles];
+    let filtered = [...allArticles];
     
     if (searchTerm) {
       filtered = filtered.filter(article => 
@@ -53,16 +52,15 @@ export default function ArticlesPage() {
       );
     }
     
-    // Sort by date (newest first)
     filtered.sort((a, b) => 
       new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime()
     );
     
     setFilteredArticles(filtered);
-  }, [searchTerm, selectedCategory, selectedYear, articles]);
+  }, [searchTerm, selectedCategory, selectedYear, allArticles]);
 
-  const categories = ['all', ...new Set(articles.map(a => a.category))];
-  const years = ['all', ...new Set(articles.map(a => new Date(a.publishedAt).getFullYear().toString()))].sort().reverse();
+  const categories = ['all', ...new Set(allArticles.map(a => a.category))];
+  const years = ['all', ...new Set(allArticles.map(a => new Date(a.publishedAt).getFullYear().toString()))].sort().reverse();
 
   if (isLoading) {
     return (
@@ -72,6 +70,7 @@ export default function ArticlesPage() {
     );
   }
 
+ 
   return (
     <div>
       {/* Hero Section */}
@@ -107,7 +106,7 @@ export default function ArticlesPage() {
                   placeholder="Search articles..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  className="w-full p-4 pl-12 pr-4 border border-amber-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-transparent text-gray-900 placeholder-gray-500"
+                  className="w-full p-4 pl-12 pr-4 border border-emerald-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-transparent text-gray-900 placeholder-gray-500"
                 />
                 <svg className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
@@ -118,10 +117,10 @@ export default function ArticlesPage() {
               <select
                 value={selectedCategory}
                 onChange={(e) => setSelectedCategory(e.target.value)}
-                className="w-full p-4 border border-amber-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-transparent text-gray-900 placeholder-gray-500"
+                className="w-full p-4 border border-emerald-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-transparent text-gray-900 bg-white"
               >
                 {categories.map(category => (
-                  <option key={category} value={category}>
+                  <option key={category} value={category} className="text-gray-900">
                     {category === 'all' ? 'All Categories' : category}
                   </option>
                 ))}
@@ -131,10 +130,10 @@ export default function ArticlesPage() {
               <select
                 value={selectedYear}
                 onChange={(e) => setSelectedYear(e.target.value)}
-                className="w-full p-4 border border-amber-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-transparent text-gray-900 placeholder-gray-500"
+                className="w-full p-4 border border-emerald-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-transparent text-gray-900 bg-white"
               >
                 {years.map(year => (
-                  <option key={year} value={year}>
+                  <option key={year} value={year} className="text-gray-900">
                     {year === 'all' ? 'All Years' : year}
                   </option>
                 ))}
@@ -149,7 +148,7 @@ export default function ArticlesPage() {
             animate={{ opacity: 1 }}
             transition={{ duration: 0.5 }}
           >
-            Showing {filteredArticles.length} of {articles.length} articles
+            Showing {filteredArticles.length} of {allArticles.length} articles
           </motion.p>
 
           {/* Articles Grid */}

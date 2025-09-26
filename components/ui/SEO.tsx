@@ -11,7 +11,7 @@ export function SEO({}: SEOProps) {
   const pathname = usePathname();
 
   // Canonical URL
-  const canonicalUrl = `https://discoversyria.com${pathname}`;
+  const canonicalUrl = `https://syriaexplorer.com${pathname}`;
 
   // Structured data for the entire site
   const siteStructuredData = {
@@ -19,8 +19,8 @@ export function SEO({}: SEOProps) {
     "@type": "TravelAgency",
     "name": "Discover Syria",
     "description": "Your trusted guide to exploring the rich history, culture, and beauty of Syria",
-    "url": "https://discoversyria.com",
-    "logo": "https://discoversyria.com/images/logo.png",
+    "url": "https://syriaexplorer.com",
+    "logo": "https://syriaexplorer.com/images/logo.png",
     "address": {
       "@type": "PostalAddress",
       "addressLocality": "Damascus",
@@ -32,9 +32,9 @@ export function SEO({}: SEOProps) {
       "contactType": "Customer Service"
     },
     "sameAs": [
-      "https://facebook.com/discoversyria",
-      "https://twitter.com/discoversyria",
-      "https://instagram.com/discoversyria"
+      "https://facebook.com/syriaexplorer",
+      "https://twitter.com/syriaexplorer",
+      "https://instagram.com/syriaexplorer"
     ]
   };
 

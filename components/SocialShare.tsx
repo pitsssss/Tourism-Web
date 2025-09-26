@@ -1,3 +1,4 @@
+// /src/components/SocialShare.tsx
 'use client';
 
 import { useState } from 'react';
@@ -72,7 +73,7 @@ export default function SocialShare({ title, url, description }: SocialShareProp
       
       <button
         onClick={copyToClipboard}
-        className="w-10 h-10 bg-amber-600 hover:bg-amber-700 text-white rounded-full flex items-center justify-center transition-colors relative"
+        className="w-10 h-10 bg-amber-600 hover:bg-amber-700 text-white rounded-full flex items-center justify-center relative"
         aria-label="Copy link to clipboard"
       >
         <Link2 className="w-5 h-5" />

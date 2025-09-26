@@ -1,4 +1,6 @@
-export const news = [
+import type { NewsItem } from '@/types';
+
+export const news: NewsItem[] = [
     {
       slug: "syria-visa-process-simplified",
       title: "Syria Simplifies Visa Process for International Tourists",

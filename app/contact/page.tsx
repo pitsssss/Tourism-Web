@@ -112,7 +112,7 @@ export default function ContactPage() {
                 <Phone className="w-8 h-8 text-emerald-600" />
               </div>
               <h3 className="text-xl font-bold text-gray-800 mb-4">Phone</h3>
-              <p className="text-gray-600">+963 11 123 4567</p>
+              <p className="text-gray-600">+963 930 673 130</p>
               <p className="text-sm text-gray-500 mt-2">Monday - Friday, 9am - 5pm (Damascus Time)</p>
             </motion.div>
             
@@ -127,7 +127,7 @@ export default function ContactPage() {
                 <Mail className="w-8 h-8 text-emerald-600" />
               </div>
               <h3 className="text-xl font-bold text-gray-800 mb-4">Email</h3>
-              <p className="text-gray-600">info@discoversyria.com</p>
+              <p className="text-gray-600">info@syriaexplorer.com</p>
               <p className="text-sm text-gray-500 mt-2">We typically respond within 24 hours</p>
             </motion.div>
             
@@ -181,7 +181,7 @@ export default function ContactPage() {
                     type="text"
                     id="name"
                     {...register("name")}
-                    className={`w-full p-3 border rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-transparent ${
+                    className={`w-full p-3 border rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-transparent text-gray-900 ${
                       errors.name ? 'border-red-500' : 'border-gray-300'
                     }`}
                     placeholder="Your full name"
@@ -199,7 +199,7 @@ export default function ContactPage() {
                     type="email"
                     id="email"
                     {...register("email")}
-                    className={`w-full p-3 border rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-transparent ${
+                    className={`w-full p-3 border rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-transparent text-gray-900 ${
                       errors.email ? 'border-red-500' : 'border-gray-300'
                     }`}
                     placeholder="your.email@example.com"
@@ -218,7 +218,7 @@ export default function ContactPage() {
                   type="text"
                   id="subject"
                   {...register("subject")}
-                  className={`w-full p-3 border rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-transparent ${
+                  className={`w-full p-3 border rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-transparent text-gray-900 ${
                     errors.subject ? 'border-red-500' : 'border-gray-300'
                   }`}
                   placeholder="How can we help you?"
@@ -236,7 +236,7 @@ export default function ContactPage() {
                   id="message"
                   rows={6}
                   {...register("message")}
-                  className={`w-full p-3 border rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-transparent ${
+                  className={`w-full p-3 border rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-transparent text-gray-900 ${
                     errors.message ? 'border-red-500' : 'border-gray-300'
                   }`}
                   placeholder="Tell us how we can help you..."
@@ -292,41 +292,61 @@ export default function ContactPage() {
           </motion.div>
           
           <div className="max-w-3xl mx-auto space-y-6">
-            {[
-              {
-                question: "Is it safe to travel to Syria?",
-                answer: "Safety conditions vary by region. We recommend checking your government's travel advisories and consulting with local experts. Many areas are now welcoming tourists with appropriate precautions."
-              },
-              {
-                question: "What documents do I need to visit Syria?",
-                answer: "Most visitors need a visa, which can be obtained through Syrian embassies or authorized tour operators. Your passport should be valid for at least 6 months beyond your planned departure date."
-              },
-              {
-                question: "When is the best time to visit Syria?",
-                answer: "The best times to visit are spring (March-May) and autumn (September-November) when temperatures are mild and pleasant for sightseeing."
-              },
-              {
-                question: "Can I travel independently in Syria?",
-                answer: "While independent travel is possible in some areas, we recommend working with reputable local tour operators who can ensure your safety and provide valuable cultural context."
-              },
-              {
-                question: "What should I know about Syrian culture and customs?",
-                answer: "Syrians are known for their hospitality. Dress modestly, especially when visiting religious sites. Always ask permission before photographing people. Learning a few Arabic phrases will be greatly appreciated."
-              }
-            ].map((faq, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-                className="border border-gray-200 rounded-lg p-6 hover:shadow-md transition-shadow"
-              >
-                <h3 className="text-xl font-bold text-gray-800 mb-3">{faq.question}</h3>
-                <p className="text-gray-600">{faq.answer}</p>
-              </motion.div>
-            ))}
-          </div>
+  {[
+    {
+      question: "Is it safe to travel to Syria?",
+      answer: "Safety conditions vary by region. We recommend checking your government's travel advisories and consulting with local experts. Many areas are now welcoming tourists with appropriate precautions."
+    },
+    {
+      question: "What documents do I need to visit Syria?",
+      answer: "Most visitors need a visa, which can be obtained through Syrian embassies or authorized tour operators. Your passport should be valid for at least 6 months beyond your planned departure date."
+    },
+    {
+      question: "When is the best time to visit Syria?",
+      answer: "The best times to visit are spring (March-May) and autumn (September-November) when temperatures are mild and pleasant for sightseeing."
+    },
+    {
+      question: "Can I travel independently in Syria?",
+      answer: "While independent travel is possible in some areas, we recommend working with reputable local tour operators who can ensure your safety and provide valuable cultural context."
+    },
+    {
+      question: "What should I know about Syrian culture and customs?",
+      answer: "Syrians are known for their hospitality. Dress modestly, especially when visiting religious sites. Always ask permission before photographing people. Learning a few Arabic phrases will be greatly appreciated."
+    }
+  ].map((faq, index) => (
+    <motion.div
+      key={index}
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.5, delay: index * 0.1 }}
+      className="border border-gray-200 rounded-lg p-6 hover:shadow-md transition-shadow cursor-pointer"
+      whileHover={{ y: -2, boxShadow: "0 10px 25px -5px rgba(0, 0, 0, 0.1)" }}
+    >
+      <div className="flex items-center justify-between">
+        <h3 className="text-xl font-bold text-gray-800 mb-3">{faq.question}</h3>
+        <motion.div
+          className="w-6 h-6 text-amber-600"
+          initial={{ rotate: 0 }}
+          whileHover={{ rotate: 90 }}
+          transition={{ duration: 0.2 }}
+        >
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+          </svg>
+        </motion.div>
+      </div>
+      <motion.p 
+        className="text-gray-600"
+        initial={{ opacity: 0, height: 0 }}
+        whileHover={{ opacity: 1, height: "auto" }}
+        transition={{ duration: 0.3 }}
+      >
+        {faq.answer}
+      </motion.p>
+    </motion.div>
+  ))}
+</div>
         </div>
       </AnimatedSection>
     </div>

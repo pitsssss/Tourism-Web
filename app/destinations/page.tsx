@@ -1,26 +1,27 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Destination } from '@/types';
 import DestinationCard from '@/components/DestinationCard';
 import { motion, AnimatePresence } from 'framer-motion';
+import { destinations } from '@/lib/destinations';
+import type { Destination } from '@/types';
+
 
 export default function DestinationsPage() {
-  const [destinations, setDestinations] = useState<Destination[]>([]);
-  const [filteredDestinations, setFilteredDestinations] = useState<Destination[]>([]);
+  // const [allDestinations, setAllDestinations] = useState([]);
+  // const [filteredDestinations, setFilteredDestinations] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedRegion, setSelectedRegion] = useState('all');
   const [isLoading, setIsLoading] = useState(true);
+  const [allDestinations, setAllDestinations] = useState<Destination[]>([]);
+const [filteredDestinations, setFilteredDestinations] = useState<Destination[]>([]);
 
   useEffect(() => {
     const fetchDestinations = async () => {
       try {
-        // Simulate API call
-        const destinationsModule = await import('@/lib/destinations');
-        const allDestinations = destinationsModule.destinations;
-        
-        setDestinations(allDestinations);
-        setFilteredDestinations(allDestinations);
+        await new Promise(resolve => setTimeout(resolve, 300));
+        setAllDestinations(destinations);
+        setFilteredDestinations(destinations);
         setIsLoading(false);
       } catch (error) {
         console.error('Error fetching destinations:', error);
@@ -32,7 +33,7 @@ export default function DestinationsPage() {
   }, []);
 
   useEffect(() => {
-    let filtered = [...destinations];
+    let filtered = [...allDestinations];
     
     if (searchTerm) {
       filtered = filtered.filter(dest => 
@@ -47,9 +48,9 @@ export default function DestinationsPage() {
     }
     
     setFilteredDestinations(filtered);
-  }, [searchTerm, selectedRegion, destinations]);
+  }, [searchTerm, selectedRegion, allDestinations]);
 
-  const regions = ['all', ...new Set(destinations.map(d => d.region))];
+  const regions = ['all', ...new Set(allDestinations.map(d => d.region))];
 
   if (isLoading) {
     return (
@@ -83,39 +84,38 @@ export default function DestinationsPage() {
         </div>
       </div>
 
-     {/* Filters */}
-<div className="py-12 bg-amber-50">
-  <div className="container mx-auto px-4">
-    <div className="flex flex-col md:flex-row gap-6 mb-12">
-      <div className="flex-1">
-        <div className="relative">
-          <input
-            type="text"
-            placeholder="Search destinations..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full p-4 pl-12 pr-4 border border-amber-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-transparent text-gray-900 placeholder-gray-500"
-          />
-          <svg className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-          </svg>
-        </div>
-      </div>
-      <div className="md:w-64">
-        <select
-          value={selectedRegion}
-          onChange={(e) => setSelectedRegion(e.target.value)}
-          className="w-full p-4 border border-amber-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-transparent text-gray-900 bg-white"
-        >
-          {regions.map(region => (
-            <option key={region} value={region} className="text-gray-900">
-              {region === 'all' ? 'All Regions' : region}
-            </option>
-          ))}
-        </select>
-      </div>
-    </div>
- 
+      {/* Filters */}
+      <div className="py-12 bg-amber-50">
+        <div className="container mx-auto px-4">
+          <div className="flex flex-col md:flex-row gap-6 mb-12">
+            <div className="flex-1">
+              <div className="relative">
+                <input
+                  type="text"
+                  placeholder="Search destinations..."
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  className="w-full p-4 pl-12 pr-4 border border-amber-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-transparent text-gray-900 placeholder-gray-500"
+                />
+                <svg className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                </svg>
+              </div>
+            </div>
+            <div className="md:w-64">
+              <select
+                value={selectedRegion}
+                onChange={(e) => setSelectedRegion(e.target.value)}
+                className="w-full p-4 border border-amber-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-transparent text-gray-900 bg-white"
+              >
+                {regions.map(region => (
+                  <option key={region} value={region} className="text-gray-900">
+                    {region === 'all' ? 'All Regions' : region}
+                  </option>
+                ))}
+              </select>
+            </div>
+          </div>
 
           {/* Results Count */}
           <motion.p 
@@ -124,7 +124,7 @@ export default function DestinationsPage() {
             animate={{ opacity: 1 }}
             transition={{ duration: 0.5 }}
           >
-            Showing {filteredDestinations.length} of {destinations.length} destinations
+            Showing {filteredDestinations.length} of {allDestinations.length} destinations
           </motion.p>
 
           {/* Destinations Grid */}
