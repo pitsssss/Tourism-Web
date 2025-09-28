@@ -6,16 +6,19 @@ import Image from 'next/image';
 import Link from 'next/link';
 import DestinationCard from '@/components/DestinationCard';
 import ArticleCard from '@/components/ArticleCard';
-import Newsletter from '@/components/ui/Newsletter';
 import { destinations } from '@/lib/destinations';
 import { articles } from '@/lib/articles';
 import type { Destination, Article } from '@/types';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
 
 export default function Home() {
   const [currentHeroIndex, setCurrentHeroIndex] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
   const [featuredDestinations, setFeaturedDestinations] = useState<Destination[]>([]);
   const [latestArticles, setLatestArticles] = useState<Article[]>([]);
+  const [userReview, setUserReview] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitSuccess, setSubmitSuccess] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -79,6 +82,64 @@ export default function Home() {
     { number: "200+", label: "Archaeological Sites" },
     { number: "18", label: "Distinct Culinary Traditions" }
   ];
+
+  const testimonials = [
+    {
+      id: 1,
+      quote: "Visiting Palmyra was like stepping back in time. The scale and preservation of the ruins are breathtaking, and our local guide brought the history to life in a way no book could.",
+      author: "Sarah J., History Enthusiast",
+      image: "/images/testimonials/sarah.jpg"
+    },
+    {
+      id: 2,
+      quote: "The hospitality of the Syrian people exceeded all my expectations. From sharing tea in Damascus' old city to home-cooked meals in Aleppo, I felt genuinely welcomed everywhere I went.",
+      author: "Michael T., Cultural Traveler",
+      image: "/images/testimonials/michael.jpg"
+    },
+    {
+      id: 3,
+      quote: "As a foodie, Syria was paradise. The flavors, the aromas, the generosity at every table - it's a culinary journey unlike any other. I'm already planning my return to try more regional specialties!",
+      author: "Lena K., Culinary Explorer",
+      image: "/images/testimonials/lena.jpg"
+    },
+    {
+      id: 4,
+      quote: "Damascus Old City stole my heart. Walking through Al-Hamidiyah Souk at sunset, with the call to prayer echoing—it was pure magic.",
+      author: "Ahmad R., Local Guide",
+      image: "/images/testimonials/ahmad.jpg"
+    },
+    {
+      id: 5,
+      quote: "I was nervous about traveling to Syria, but the warmth of the people and the beauty of the landscapes changed my perspective forever.",
+      author: "Emma L., Solo Traveler",
+      image: "/images/testimonials/emma.jpg"
+    }
+  ];
+
+  const visibleTestimonials = 3;
+  const totalTestimonials = testimonials.length;
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  const nextSlide = () => {
+    setCurrentIndex((prev) => (prev + 1) % totalTestimonials);
+  };
+
+  const prevSlide = () => {
+    setCurrentIndex((prev) => (prev - 1 + totalTestimonials) % totalTestimonials);
+  };
+
+  const handleSubmitReview = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!userReview.trim()) return;
+    
+    setIsSubmitting(true);
+    setTimeout(() => {
+      setIsSubmitting(false);
+      setSubmitSuccess(true);
+      setUserReview('');
+      setTimeout(() => setSubmitSuccess(false), 3000);
+    }, 800);
+  };
 
   if (isLoading) {
     return (
@@ -272,116 +333,132 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Testimonials Section */}
-      <section className="py-20 bg-gray-900 text-white">
-        <div className="container mx-auto px-4">
-          <motion.div 
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8 }}
-            className="text-center mb-16"
-          >
-            <h2 className="text-4xl md:text-5xl font-bold mb-4 font-playfair">
-              What Travelers Say
-            </h2>
-            <p className="text-xl opacity-90 max-w-3xl mx-auto">
-              Hear from those who've experienced the magic of Syria firsthand
-            </p>
-          </motion.div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {[
-              {
-                quote: "Visiting Palmyra was like stepping back in time. The scale and preservation of the ruins are breathtaking, and our local guide brought the history to life in a way no book could.",
-                author: "Sarah J., History Enthusiast",
-                image: "/images/testimonials/sarah.jpg"
-              },
-              {
-                quote: "The hospitality of the Syrian people exceeded all my expectations. From sharing tea in Damascus' old city to home-cooked meals in Aleppo, I felt genuinely welcomed everywhere I went.",
-                author: "Michael T., Cultural Traveler",
-                image: "/images/testimonials/michael.jpg"
-              },
-              {
-                quote: "As a foodie, Syria was paradise. The flavors, the aromas, the generosity at every table - it's a culinary journey unlike any other. I'm already planning my return to try more regional specialties!",
-                author: "Lena K., Culinary Explorer",
-                image: "/images/testimonials/lena.jpg"
-              }
-            ].map((testimonial, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-                className="bg-gray-800 p-8 rounded-xl shadow-lg hover:shadow-xl transition-shadow"
-              >
-                <div className="mb-6">
-                  <svg className="w-12 h-12 text-amber-400 mb-4" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.979-3.995 3.376-3.995 6.441v7.391h-6zm-14 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.979-3.996 3.376-3.996 6.441v7.391h-6z" />
-                  </svg>
-                  <p className="text-gray-300 text-lg leading-relaxed">
-                    "{testimonial.quote}"
-                  </p>
-                </div>
-                <div className="flex items-center">
-                  <div className="w-12 h-12 bg-amber-500 rounded-full flex items-center justify-center text-white font-bold text-lg">
-                    {testimonial.author.split(' ')[0][0]}
-                  </div>
-                  <div className="ml-4">
-                    <p className="font-semibold">{testimonial.author}</p>
-                  </div>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
+     {/* Enhanced Testimonials Section */}
+<section 
+  className="py-20 relative overflow-hidden"
+  style={{ backgroundImage: "url('/images/hero/testimonials.jpeg')" }}
+>
+  {/* Dark + Amber Overlay for Readability */}
+  <div className="absolute inset-0 bg-gradient-to-r from-gray-900/80 to-amber-900/70"></div>
 
-    {/* Call to Action */}
-<section className="py-20 relative overflow-hidden">
-  {/* Background Image */}
-  <div 
-    className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-    style={{ backgroundImage: "url('/images/syria-background.jpg')" }} // ✅ Replace with your image path
-  />
-  
-  {/* Amber Overlay */}
-  <div className="absolute inset-0 bg-gradient-to-r from-amber-900/90 to-amber-800/80"></div>
-
-  {/* Content */}
   <div className="container mx-auto px-4 relative z-10">
-    <div className="max-w-4xl mx-auto text-center">
-      <motion.h2 
-        className="text-4xl md:text-5xl font-bold mb-6 font-playfair text-white"
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.8 }}
+    <motion.div 
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.8 }}
+      className="text-center mb-16"
+    >
+      <h2 className="text-4xl md:text-5xl font-bold mb-4 font-playfair text-white">
+        What Travelers Say
+      </h2>
+      <p className="text-xl opacity-90 max-w-3xl mx-auto text-white">
+        Hear from those who've experienced the magic of Syria firsthand
+      </p>
+    </motion.div>
+
+    {/* Carousel Container */}
+    <div className="relative overflow-hidden rounded-2xl mb-12 bg-gray-800/40 backdrop-blur-sm">
+      <button
+        onClick={prevSlide}
+        className="absolute left-4 top-1/2 z-10 -translate-y-1/2 bg-amber-700 hover:bg-amber-600 text-white p-3 rounded-full shadow-lg transition-all duration-300"
+        aria-label="Previous testimonial"
       >
-        Ready to Explore Syria?
-      </motion.h2>
-      <motion.p 
-        className="text-xl mb-8 text-white opacity-90"
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.8, delay: 0.2 }}
+        <ChevronLeft className="w-6 h-6" />
+      </button>
+
+      <button
+        onClick={nextSlide}
+        className="absolute right-4 top-1/2 z-10 -translate-y-1/2 bg-amber-700 hover:bg-amber-600 text-white p-3 rounded-full shadow-lg transition-all duration-300"
+        aria-label="Next testimonial"
       >
-        Subscribe to our newsletter for exclusive travel tips, updates on accessible destinations, and special offers.
-      </motion.p>
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.8, delay: 0.4 }}
+        <ChevronRight className="w-6 h-6" />
+      </button>
+
+      <div 
+        className="flex transition-transform duration-500 ease-in-out"
+        style={{ transform: `translateX(-${currentIndex * (100 / visibleTestimonials)}%)` }}
       >
-        <Newsletter />
-      </motion.div>
+        {testimonials.map((testimonial) => (
+          <div key={testimonial.id} className="flex-shrink-0 w-full md:w-1/3 px-4">
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
+              className="bg-gray-800/90 p-8 rounded-xl h-full flex flex-col backdrop-blur-sm border border-gray-700/50"
+            >
+              <div className="mb-6">
+                <svg className="w-12 h-12 text-amber-600 mb-4" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.979-3.995 3.376-3.995 6.441v7.391h-6zm-14 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.979-3.996 3.376-3.996 6.441v7.391h-6z" />
+                </svg>
+                <p className="text-gray-200 text-lg leading-relaxed">
+                  "{testimonial.quote}"
+                </p>
+              </div>
+              <div className="mt-auto flex items-center">
+                <div className="w-12 h-12 bg-gradient-to-r from-amber-600 to-amber-800 rounded-full flex items-center justify-center text-white font-bold text-lg">
+                  {testimonial.author.split(' ')[0][0]}
+                </div>
+                <div className="ml-4">
+                  <p className="font-semibold text-white">{testimonial.author}</p>
+                </div>
+              </div>
+            </motion.div>
+          </div>
+        ))}
+      </div>
+
+      <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2">
+        {testimonials.map((_, idx) => (
+          <button
+            key={idx}
+            onClick={() => setCurrentIndex(idx)}
+            className={`w-3 h-3 rounded-full transition-all ${
+              idx === currentIndex ? 'bg-amber-600' : 'bg-gray-400'
+            }`}
+            aria-label={`Go to testimonial ${idx + 1}`}
+          />
+        ))}
+      </div>
+    </div>
+
+    {/* User Review Form */}
+    <div className="max-w-3xl mx-auto bg-gray-800/90 p-8 rounded-2xl border border-amber-700/30 backdrop-blur-sm">
+      <h3 className="text-2xl font-bold mb-4 text-center text-white">Share Your Experience</h3>
+      <form onSubmit={handleSubmitReview}>
+        <textarea
+          value={userReview}
+          onChange={(e) => setUserReview(e.target.value)}
+          placeholder="Write your review about traveling in Syria..."
+          className="w-full p-4 bg-gray-700/80 text-white rounded-lg border border-gray-600 focus:ring-2 focus:ring-amber-500 focus:border-transparent min-h-[120px] mb-4 backdrop-blur-sm"
+          maxLength={500}
+        />
+        <div className="text-center mt-4">
+          <button
+            type="submit"
+            disabled={isSubmitting || !userReview.trim()}
+            className="bg-amber-700 hover:bg-amber-600 text-white font-semibold py-3 px-6 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            {isSubmitting ? 'Submitting...' : 'Submit Review'}
+          </button>
+        </div>
+      </form>
+
+      <AnimatePresence>
+        {submitSuccess && (
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 10 }}
+            className="mt-4 text-green-400 text-center"
+          >
+            Thank you! Your review will be added soon.
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   </div>
 </section>
-</div>
-
+    </div>
   );
 }

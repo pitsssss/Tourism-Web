@@ -1,88 +1,4 @@
-// import React from 'react';
-// import Link from 'next/link';
-
-// const Footer = () => {
-//   return (
-//     <footer className="bg-gray-100 text-black min-h-screen flex justify-center items-center">
-//       <div className="container py-12">
-//         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-//           <div className="space-y-4 text-center md:text-left">
-//             <div className="flex flex-col items-center md:items-start">
-//               <img 
-//                 className="h-10 w-auto" 
-//                 src="/images/favicon.ico" 
-//                 alt="SyriaExplorer Logo" 
-//               />
-//               <span className="mt-2 text-xl font-bold text-black">SyriaExplorer</span>
-//             </div>
-//             <p className="text-gray-600 text-center md:text-left">
-//               Discover the rich history, culture, and beauty of Syria through our curated experiences.
-//             </p>
-//             <div className="flex justify-center md:justify-start space-x-4">
-//               {/* Social icons here */}
-//             </div>
-//           </div>
-          
-//           {/* Columns: Destinations, Company, Support */}
-//           <div className="text-center md:text-left">
-//             <h3 className="text-sm font-semibold leading-6 text-black">Destinations</h3>
-//             <ul role="list" className="mt-6 space-y-4">
-//               <li><Link href="#" className="text-sm leading-6 text-gray-600 hover:text-black transition-colors">Damascus</Link></li>
-//               <li><Link href="#" className="text-sm leading-6 text-gray-600 hover:text-black transition-colors">Aleppo</Link></li>
-//               <li><Link href="#" className="text-sm leading-6 text-gray-600 hover:text-black transition-colors">Palmyra</Link></li>
-//               <li><Link href="#" className="text-sm leading-6 text-gray-600 hover:text-black transition-colors">Latakia</Link></li>
-//               <li><Link href="#" className="text-sm leading-6 text-gray-600 hover:text-black transition-colors">Tartus</Link></li>
-//             </ul>
-//           </div>
-
-//           <div className="text-center md:text-left">
-//             <h3 className="text-sm font-semibold leading-6 text-black">Company</h3>
-//             <ul role="list" className="mt-6 space-y-4">
-//               <li><Link href="#" className="text-sm leading-6 text-gray-600 hover:text-black transition-colors">About Us</Link></li>
-//               <li><Link href="#" className="text-sm leading-6 text-gray-600 hover:text-black transition-colors">Our Team</Link></li>
-//               <li><Link href="#" className="text-sm leading-6 text-gray-600 hover:text-black transition-colors">Careers</Link></li>
-//               <li><Link href="#" className="text-sm leading-6 text-gray-600 hover:text-black transition-colors">Press</Link></li>
-//               <li><Link href="#" className="text-sm leading-6 text-gray-600 hover:text-black transition-colors">Blog</Link></li>
-//             </ul>
-//           </div>
-
-//           <div className="text-center md:text-left">
-//             <h3 className="text-sm font-semibold leading-6 text-black">Support</h3>
-//             <ul role="list" className="mt-6 space-y-4">
-//               <li><Link href="#" className="text-sm leading-6 text-gray-600 hover:text-black transition-colors">Help Center</Link></li>
-//               <li><Link href="#" className="text-sm leading-6 text-gray-600 hover:text-black transition-colors">Contact Us</Link></li>
-//               <li><Link href="#" className="text-sm leading-6 text-gray-600 hover:text-black transition-colors">Privacy Policy</Link></li>
-//               <li><Link href="#" className="text-sm leading-6 text-gray-600 hover:text-black transition-colors">Terms of Service</Link></li>
-//               <li><Link href="#" className="text-sm leading-6 text-gray-600 hover:text-black transition-colors">Cookie Policy</Link></li>
-//             </ul>
-//           </div>
-//         </div>
-        
-//         <div className="mt-12 border-t border-gray-300 pt-8 flex flex-col md:flex-row justify-center items-center text-center">
-//           <p className="text-xs leading-5 text-gray-600 mb-4 md:mb-0">
-//             &copy; {new Date().getFullYear()} SyriaExplorer. All rights reserved.
-//           </p>
-//           <div className="md:ml-4">
-//             <select 
-//               id="language" 
-//               name="language" 
-//               className="block w-full rounded-md border border-gray-400 bg-white py-1.5 pl-3 pr-10 text-black text-sm focus:ring-2 focus:ring-primary-500 focus:outline-none"
-//             >
-//               <option>English</option>
-//               <option>العربية</option>
-//               <option>Français</option>
-//             </select>
-//           </div>
-//         </div>
-//       </div>
-//     </footer>
-//   );
-// };
-
-// export default Footer;
-
-
-'use client';
+'use client';   
 
 import Link from 'next/link';
 import { motion } from 'framer-motion';
@@ -140,7 +56,7 @@ export default function Footer() {
             transition={{ duration: 0.6 }}
             className="lg:col-span-2"
           >
-            <h3 className="text-3xl font-bold mb-4 font-serif bg-gradient-to-r from-amber-400 to-amber-200 bg-clip-text text-transparent">
+            <h3 className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-amber-600 to-amber-800 bg-clip-text text-transparent font-playfair">
               Explore Syria
             </h3>
             <p className="text-gray-300 mb-6 leading-relaxed">
@@ -154,7 +70,7 @@ export default function Footer() {
                 rel="noopener noreferrer"
                 whileHover={{ y: -3 }}
                 whileTap={{ scale: 0.9 }}
-                className="w-10 h-10 bg-amber-600 rounded-full flex items-center justify-center hover:bg-amber-700 transition-colors"
+                className="w-10 h-10 bg-gradient-to-r from-amber-600 to-amber-800 rounded-full flex items-center justify-center hover:from-amber-700 hover:to-amber-900 transition-all"
                 aria-label="Visit us on Facebook"
               >
                 <Facebook className="w-5 h-5" />
@@ -166,7 +82,7 @@ export default function Footer() {
                 rel="noopener noreferrer"
                 whileHover={{ y: -3 }}
                 whileTap={{ scale: 0.9 }}
-                className="w-10 h-10 bg-amber-600 rounded-full flex items-center justify-center hover:bg-amber-700 transition-colors"
+                className="w-10 h-10 bg-gradient-to-r from-amber-600 to-amber-800 rounded-full flex items-center justify-center hover:from-amber-700 hover:to-amber-900 transition-all"
                 aria-label="Follow us on Instagram"
               >
                 <Instagram className="w-5 h-5" />
@@ -178,7 +94,7 @@ export default function Footer() {
                 rel="noopener noreferrer"
                 whileHover={{ y: -3 }}
                 whileTap={{ scale: 0.9 }}
-                className="w-10 h-10 bg-amber-600 rounded-full flex items-center justify-center hover:bg-amber-700 transition-colors"
+                className="w-10 h-10 bg-gradient-to-r from-amber-600 to-amber-800 rounded-full flex items-center justify-center hover:from-amber-700 hover:to-amber-900 transition-all"
                 aria-label="Connect with us on LinkedIn"
               >
                 <Linkedin className="w-5 h-5" />
@@ -222,7 +138,7 @@ export default function Footer() {
               transition={{ duration: 0.6 }}
               className="flex items-start space-x-4"
             >
-              <div className="w-12 h-12 bg-amber-600 rounded-full flex items-center justify-center flex-shrink-0">
+              <div className="w-10 h-10 bg-gradient-to-r from-amber-600 to-amber-800 rounded-full flex items-center justify-center hover:from-amber-700 hover:to-amber-900 transition-all">
                 <Mail className="w-6 h-6" />
               </div>
               <div>
@@ -238,7 +154,7 @@ export default function Footer() {
               transition={{ duration: 0.6, delay: 0.1 }}
               className="flex items-start space-x-4"
             >
-              <div className="w-12 h-12 bg-amber-600 rounded-full flex items-center justify-center flex-shrink-0">
+              <div className="w-10 h-10 bg-gradient-to-r from-amber-600 to-amber-800 rounded-full flex items-center justify-center hover:from-amber-700 hover:to-amber-900 transition-all">
                 <Phone className="w-6 h-6" />
               </div>
               <div>
@@ -254,7 +170,7 @@ export default function Footer() {
               transition={{ duration: 0.6, delay: 0.2 }}
               className="flex items-start space-x-4"
             >
-              <div className="w-12 h-12 bg-amber-600 rounded-full flex items-center justify-center flex-shrink-0">
+              <div className="w-10 h-10 bg-gradient-to-r from-amber-600 to-amber-800 rounded-full flex items-center justify-center hover:from-amber-700 hover:to-amber-900 transition-all ">
                 <MapPin className="w-6 h-6" />
               </div>
               <div>
@@ -292,11 +208,11 @@ export default function Footer() {
                 />
               </div>
               <button
-                type="submit"
-                className="bg-amber-600 hover:bg-amber-700 text-white font-semibold py-3 px-6 rounded-lg transition-colors whitespace-nowrap shadow hover:shadow-md min-w-[120px]"
-              >
-                Subscribe
-              </button>
+  type="submit"
+  className="bg-gradient-to-r from-amber-600 to-amber-800 hover:from-amber-700 hover:to-amber-900 text-white font-semibold py-3 px-6 rounded-lg transition-all whitespace-nowrap shadow hover:shadow-md min-w-[120px]"
+>
+  Subscribe
+</button>
             </form>
           </div>
         </div>

@@ -18,6 +18,55 @@ const contactFormSchema = z.object({
 
 type ContactFormValues = z.infer<typeof contactFormSchema>;
 
+// --- مكوّن FAQItem ---
+const FAQItem = ({ faq, index }: { faq: { question: string; answer: string }; index: number }) => {
+  const [isOpen, setIsOpen] = useState(false);
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-100px" }}
+      transition={{ duration: 0.5, delay: index * 0.1 }}
+      className="border border-gray-200 rounded-lg p-6 cursor-pointer"
+      onClick={() => setIsOpen(!isOpen)}
+      role="button"
+      tabIndex={0}
+      onKeyDown={(e) => {
+        if (e.key === 'Enter' || e.key === ' ') setIsOpen(!isOpen);
+      }}
+    >
+      <div className="flex items-center justify-between">
+        <h3 className="text-xl font-bold text-gray-800">{faq.question}</h3>
+        <motion.div
+          className="w-6 h-6 text-amber-600 flex items-center justify-center"
+          animate={{ rotate: isOpen ? 180 : 0 }}
+          transition={{ duration: 0.2 }}
+        >
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+          </svg>
+        </motion.div>
+      </div>
+
+      <motion.div
+        initial={false}
+        animate={{ 
+          height: isOpen ? 'auto' : 0,
+          opacity: isOpen ? 1 : 0 
+        }}
+        transition={{ 
+          height: { duration: 0.3, ease: "easeInOut" },
+          opacity: { duration: 0.2 }
+        }}
+        className="overflow-hidden"
+      >
+        <p className="text-gray-600 mt-3">{faq.answer}</p>
+      </motion.div>
+    </motion.div>
+  );
+};
+
 export default function ContactPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitSuccess, setSubmitSuccess] = useState(false);
@@ -63,26 +112,36 @@ export default function ContactPage() {
   return (
     <div>
       {/* Hero Section */}
-      <div className="bg-gradient-to-r from-emerald-700 to-teal-800 text-white py-20">
-        <div className="container mx-auto px-4 text-center">
-          <motion.h1 
-            className="text-5xl md:text-6xl font-bold mb-6 font-playfair"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-          >
-            Contact Us
-          </motion.h1>
-          <motion.p 
-            className="text-xl md:text-2xl max-w-3xl mx-auto opacity-90"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
-          >
-            We'd love to hear from you. Get in touch with any questions or feedback.
-          </motion.p>
-        </div>
-      </div>
+      <div>
+  {/* Hero Section */}
+  <div 
+    className="relative bg-cover bg-center bg-no-repeat h-[300px] md:h-[400px]"
+    style={{ backgroundImage: "url('/images/hero/syria-background.jpg')" }}
+  >
+    {/* طبقة التدرج فوق الصورة */}
+    <div className="absolute inset-0 bg-gradient-to-r from-emerald-700/80 to-teal-800/80"></div>
+    
+    {/* المحتوى */}
+    <div className="relative container mx-auto px-4 h-full flex flex-col items-center justify-center text-center">
+      <motion.h1 
+        className="text-5xl md:text-6xl font-bold mb-6 font-playfair text-white"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8 }}
+      >
+        Contact Us
+      </motion.h1>
+      <motion.p 
+        className="text-xl md:text-2xl max-w-3xl mx-auto opacity-90 text-white"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8, delay: 0.2 }}
+      >
+        We'd love to hear from you. Get in touch with any questions or feedback.
+      </motion.p>
+    </div>
+  </div>
+</div>
 
       {/* Contact Information */}
       <AnimatedSection className="py-20 bg-emerald-50">
@@ -275,13 +334,13 @@ export default function ContactPage() {
         </div>
       </AnimatedSection>
 
-      {/* FAQ Section */}
+      {/* FAQ Section - مُصلَح للعمل على الجوال */}
       <AnimatedSection className="py-20 bg-white">
         <div className="container mx-auto px-4">
           <motion.div 
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
+            viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 0.8 }}
             className="text-center mb-16"
           >
@@ -292,61 +351,31 @@ export default function ContactPage() {
           </motion.div>
           
           <div className="max-w-3xl mx-auto space-y-6">
-  {[
-    {
-      question: "Is it safe to travel to Syria?",
-      answer: "Safety conditions vary by region. We recommend checking your government's travel advisories and consulting with local experts. Many areas are now welcoming tourists with appropriate precautions."
-    },
-    {
-      question: "What documents do I need to visit Syria?",
-      answer: "Most visitors need a visa, which can be obtained through Syrian embassies or authorized tour operators. Your passport should be valid for at least 6 months beyond your planned departure date."
-    },
-    {
-      question: "When is the best time to visit Syria?",
-      answer: "The best times to visit are spring (March-May) and autumn (September-November) when temperatures are mild and pleasant for sightseeing."
-    },
-    {
-      question: "Can I travel independently in Syria?",
-      answer: "While independent travel is possible in some areas, we recommend working with reputable local tour operators who can ensure your safety and provide valuable cultural context."
-    },
-    {
-      question: "What should I know about Syrian culture and customs?",
-      answer: "Syrians are known for their hospitality. Dress modestly, especially when visiting religious sites. Always ask permission before photographing people. Learning a few Arabic phrases will be greatly appreciated."
-    }
-  ].map((faq, index) => (
-    <motion.div
-      key={index}
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ duration: 0.5, delay: index * 0.1 }}
-      className="border border-gray-200 rounded-lg p-6 hover:shadow-md transition-shadow cursor-pointer"
-      whileHover={{ y: -2, boxShadow: "0 10px 25px -5px rgba(0, 0, 0, 0.1)" }}
-    >
-      <div className="flex items-center justify-between">
-        <h3 className="text-xl font-bold text-gray-800 mb-3">{faq.question}</h3>
-        <motion.div
-          className="w-6 h-6 text-amber-600"
-          initial={{ rotate: 0 }}
-          whileHover={{ rotate: 90 }}
-          transition={{ duration: 0.2 }}
-        >
-          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-          </svg>
-        </motion.div>
-      </div>
-      <motion.p 
-        className="text-gray-600"
-        initial={{ opacity: 0, height: 0 }}
-        whileHover={{ opacity: 1, height: "auto" }}
-        transition={{ duration: 0.3 }}
-      >
-        {faq.answer}
-      </motion.p>
-    </motion.div>
-  ))}
-</div>
+            {[
+              {
+                question: "Is it safe to travel to Syria?",
+                answer: "Safety conditions vary by region. We recommend checking your government's travel advisories and consulting with local experts. Many areas are now welcoming tourists with appropriate precautions."
+              },
+              {
+                question: "What documents do I need to visit Syria?",
+                answer: "Most visitors need a visa, which can be obtained through Syrian embassies or authorized tour operators. Your passport should be valid for at least 6 months beyond your planned departure date."
+              },
+              {
+                question: "When is the best time to visit Syria?",
+                answer: "The best times to visit are spring (March-May) and autumn (September-November) when temperatures are mild and pleasant for sightseeing."
+              },
+              {
+                question: "Can I travel independently in Syria?",
+                answer: "While independent travel is possible in some areas, we recommend working with reputable local tour operators who can ensure your safety and provide valuable cultural context."
+              },
+              {
+                question: "What should I know about Syrian culture and customs?",
+                answer: "Syrians are known for their hospitality. Dress modestly, especially when visiting religious sites. Always ask permission before photographing people. Learning a few Arabic phrases will be greatly appreciated."
+              }
+            ].map((faq, index) => (
+              <FAQItem key={index} faq={faq} index={index} />
+            ))}
+          </div>
         </div>
       </AnimatedSection>
     </div>

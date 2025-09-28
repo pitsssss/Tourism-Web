@@ -77,26 +77,32 @@ export default function Sitemap() {
   return (
     <div className="min-h-screen bg-white">
       {/* Hero Section */}
-      <div className="bg-gradient-to-r from-blue-600 to-blue-800 text-white py-20 overflow-hidden">
-        <div className="container mx-auto px-4 text-center">
-          <motion.h1 
-            className="text-5xl md:text-6xl font-bold mb-4 font-playfair"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, ease: "easeOut" }}
-          >
-            Sitemap
-          </motion.h1>
-          <motion.p 
-            className="text-xl md:text-2xl max-w-3xl mx-auto opacity-90"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.2, ease: "easeOut" }}
-          >
-            Navigate through all pages of Explore Syria.
-          </motion.p>
-        </div>
-      </div>
+      <div>
+  <div 
+    className="relative bg-cover bg-center bg-no-repeat h-[300px] md:h-[400px] overflow-hidden"
+    style={{ backgroundImage: "url('/images/hero/syria-background.jpg')" }}
+  >
+    <div className="absolute inset-0 bg-gradient-to-r from-blue-600/80 to-blue-800/80"></div>
+    <div className="relative container mx-auto px-4 h-full flex flex-col items-center justify-center text-center">
+      <motion.h1 
+        className="text-5xl md:text-6xl font-bold mb-4 font-playfair text-white"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.7, ease: "easeOut" }}
+      >
+        Sitemap
+      </motion.h1>
+      <motion.p 
+        className="text-xl md:text-2xl max-w-3xl mx-auto opacity-90 text-white"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.7, delay: 0.2, ease: "easeOut" }}
+      >
+        Navigate through all pages of Explore Syria.
+      </motion.p>
+    </div>
+  </div>
+</div>
 
       {/* Sitemap Content */}
       <AnimatedSection className="py-16 bg-white">

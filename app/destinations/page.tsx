@@ -8,13 +8,12 @@ import type { Destination } from '@/types';
 
 
 export default function DestinationsPage() {
-  // const [allDestinations, setAllDestinations] = useState([]);
-  // const [filteredDestinations, setFilteredDestinations] = useState([]);
+
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedRegion, setSelectedRegion] = useState('all');
   const [isLoading, setIsLoading] = useState(true);
   const [allDestinations, setAllDestinations] = useState<Destination[]>([]);
-const [filteredDestinations, setFilteredDestinations] = useState<Destination[]>([]);
+  const [filteredDestinations, setFilteredDestinations] = useState<Destination[]>([]);
 
   useEffect(() => {
     const fetchDestinations = async () => {
@@ -62,27 +61,33 @@ const [filteredDestinations, setFilteredDestinations] = useState<Destination[]>(
 
   return (
     <div>
-      {/* Hero Section */}
-      <div className="bg-gradient-to-r from-amber-700 to-amber-900 text-white py-20">
-        <div className="container mx-auto px-4 text-center">
-          <motion.h1 
-            className="text-5xl md:text-6xl font-bold mb-6 font-playfair"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-          >
-            Explore Syria's Treasures
-          </motion.h1>
-          <motion.p 
-            className="text-xl md:text-2xl max-w-3xl mx-auto opacity-90"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
-          >
-            From ancient ruins to vibrant markets, discover the wonders that await you in Syria
-          </motion.p>
-        </div>
-      </div>
+  {/* Hero Section */}
+  <div>
+  <div 
+    className="relative bg-cover bg-center bg-no-repeat h-[300px] md:h-[400px]"
+    style={{ backgroundImage: "url('/images/hero/syria-background.jpg')" }}
+  >
+    <div className="absolute inset-0 bg-gradient-to-r from-amber-700/80 to-amber-900/80"></div>
+    <div className="relative container mx-auto px-4 h-full flex flex-col items-center justify-center text-center">
+      <motion.h1 
+        className="text-5xl md:text-6xl font-bold mb-6 font-playfair text-white"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8 }}
+      >
+        Explore Syria's Treasures
+      </motion.h1>
+      <motion.p 
+        className="text-xl md:text-2xl max-w-3xl mx-auto opacity-90 text-white"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8, delay: 0.2 }}
+      >
+        From ancient ruins to vibrant markets, discover the wonders that await you in Syria
+      </motion.p>
+    </div>
+  </div>
+</div>
 
       {/* Filters */}
       <div className="py-12 bg-amber-50">

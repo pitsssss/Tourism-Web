@@ -1,59 +1,105 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { z } from 'zod';
+// app/api/contact/route.ts
+import { NextRequest } from 'next/server';
+import nodemailer from 'nodemailer';
 
-// Define the schema for the contact form
-const contactFormSchema = z.object({
-  name: z.string().min(2, "Name must be at least 2 characters"),
-  email: z.string().email("Please enter a valid email address"),
-  subject: z.string().min(5, "Subject must be at least 5 characters"),
-  message: z.string().min(10, "Message must be at least 10 characters"),
-});
+// دالة للتحقق من صحة البريد الإلكتروني
+function isValidEmail(email: string): boolean {
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  return emailRegex.test(email);
+}
 
-export async function POST(request: NextRequest) {
+// دالة للتحقق من طول النص
+function isValidLength(value: string, min: number, max: number): boolean {
+  return value.length >= min && value.length <= max;
+}
+
+export async function POST(req: NextRequest) {
   try {
-    // Parse the request body
-    const body = await request.json();
-    
-    // Validate the data
-    const validatedData = contactFormSchema.parse(body);
-    
-    // In a real application, you would:
-    // 1. Send an email using a service like SendGrid, Nodemailer, etc.
-    // 2. Save to a database
-    // 3. Send notifications to your team
-    
-    // For demo purposes, log the data
-    console.log('New contact form submission:', validatedData);
-    
-    // Simulate email sending
-    await new Promise(resolve => setTimeout(resolve, 1000));
-    
-    // Return success response
-    return NextResponse.json(
-      { success: true, message: 'Message sent successfully' },
-      { status: 200 }
-    );
-  } catch (error) {
-    console.error('Contact form submission error:', error);
-    
-    if (error instanceof z.ZodError) {
-      // Use error.issues instead of error.errors
-      return NextResponse.json(
-        { 
-          success: false, 
-          message: 'Invalid form data', 
-          errors: error.issues.map(issue => ({
-            path: issue.path.join('.'),
-            message: issue.message
-          }))
-        },
-        { status: 400 }
-      );
+    const body = await req.json();
+
+    // 1. التحقق من وجود الجسم كاملاً
+    if (!body || typeof body !== 'object') {
+      return Response.json({ error: 'Invalid request format' }, { status: 400 });
     }
-    
-    return NextResponse.json(
-      { success: false, message: 'Something went wrong' },
-      { status: 500 }
-    );
+
+    const { name, email, subject, message } = body;
+
+    // 2. التحقق من الحقول المطلوبة
+    if (!name || !email || !subject || !message) {
+      return Response.json({ error: 'All fields are required' }, { status: 400 });
+    }
+
+    // 3. التحقق من أن القيم نصوص
+    if (
+      typeof name !== 'string' ||
+      typeof email !== 'string' ||
+      typeof subject !== 'string' ||
+      typeof message !== 'string'
+    ) {
+      return Response.json({ error: 'All fields must be text' }, { status: 400 });
+    }
+
+    // 4. التحقق من طول الحقول
+    if (!isValidLength(name.trim(), 2, 50)) {
+      return Response.json({ error: 'Name must be between 2 and 50 characters' }, { status: 400 });
+    }
+
+    if (!isValidLength(subject.trim(), 5, 100)) {
+      return Response.json({ error: 'Subject must be between 5 and 100 characters' }, { status: 400 });
+    }
+
+    if (!isValidLength(message.trim(), 10, 2000)) {
+      return Response.json({ error: 'Message must be between 10 and 2000 characters' }, { status: 400 });
+    }
+
+    // 5. التحقق من صحة البريد الإلكتروني
+    if (!isValidEmail(email.trim())) {
+      return Response.json({ error: 'Please provide a valid email address' }, { status: 400 });
+    }
+
+    // 6. منع محتوى ضار (XSS بسيط)
+    const dangerousPatterns = /<script|javascript:|on\w+=/i;
+    if (
+      dangerousPatterns.test(name) ||
+      dangerousPatterns.test(subject) ||
+      dangerousPatterns.test(message)
+    ) {
+      return Response.json({ error: 'Invalid characters detected' }, { status: 400 });
+    }
+
+    // 7. إعداد ناقل البريد
+    const transporter = nodemailer.createTransport({
+      host: 'smtp.gmail.com',
+      port: 587,
+      secure: false,
+      auth: {
+        user: 'petertoss2004@gmail.com',
+        pass: process.env.GMAIL_APP_PASSWORD,
+      },
+    });
+
+    // 8. إرسال البريد
+    await transporter.sendMail({
+      from: `"${name.trim()}" <${email.trim()}>`,
+      to: 'petertoss2004@gmail.com',
+      replyTo: email.trim(),
+      subject: `Contact Form: ${subject.trim()}`,
+      text: `Name: ${name.trim()}\nEmail: ${email.trim()}\n\nMessage:\n${message.trim()}`,
+      html: `
+        <h2>New Message from Expore Syria Contact Form</h2>
+        <p><strong>Name:</strong> ${name.trim()}</p>
+        <p><strong>Email:</strong> <a href="mailto:${email.trim()}">${email.trim()}</a></p>
+        <p><strong>Subject:</strong> ${subject.trim()}</p>
+        <div style="margin-top: 16px;">
+          <strong>Message:</strong>
+          <p style="white-space: pre-wrap; margin-top: 8px;">${message.trim()}</p>
+        </div>
+      `,
+    });
+
+    return Response.json({ success: true });
+  } catch (error) {
+    console.error('Contact form error:', error);
+    return Response.json({ error: 'Failed to send message. Please try again later.' }, { status: 500 });
   }
 }
